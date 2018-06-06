@@ -175,6 +175,7 @@
     </Compile>
     <Compile Include="Ckeck.cs" />
     <Compile Include="ColumnSorter.cs" />
+    <Compile Include="AICheck\Entity\Door.cs" />
     <Compile Include="EventTrack\Events\DocEvents.cs" />
     <Compile Include="Graphics\GraphicsStream.cs" />
     <Compile Include="Graphics\GraphicsStreamDwg.cs" />
@@ -184,6 +185,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="AICheck\Result\Report.cs" />
     <Compile Include="Snoop\CollectorExts\DataTypeInfoHelper.cs" />
     <Compile Include="Snoop\CollectorExts\ElementMethodsStream.cs" />
     <Compile Include="Snoop\CollectorExts\ElementPropertiesStream.cs" />
@@ -338,11 +340,11 @@
     <Compile Include="Snoop\Forms\SearchBy.Designer.cs">
       <DependentUpon>SearchBy.cs</DependentUpon>
     </Compile>
-    <Compile Include="Snoop\Forms\SelectBy.cs">
+    <Compile Include="AICheck\Forms\CheckRvt.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Snoop\Forms\SelectBy.Designer.cs">
-      <DependentUpon>SelectBy.cs</DependentUpon>
+    <Compile Include="AICheck\Forms\CheckRvt.Designer.cs">
+      <DependentUpon>CheckRvt.cs</DependentUpon>
     </Compile>
     <Compile Include="Snoop\Utils.cs">
       <SubType>Code</SubType>
@@ -402,8 +404,8 @@
     <EmbeddedResource Include="Snoop\Forms\SearchBy.resx">
       <DependentUpon>SearchBy.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Snoop\Forms\SelectBy.resx">
-      <DependentUpon>SelectBy.cs</DependentUpon>
+    <EmbeddedResource Include="AICheck\Forms\CheckRvt.resx">
+      <DependentUpon>CheckRvt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Xml\Forms\Dom.resx">
       <DependentUpon>Dom.cs</DependentUpon>
@@ -456,12 +458,13 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(ProjectDir)RevitLookupZW.addin" "$(AppData)\Autodesk\REVIT\Addins\2018"
-copy "$(ProjectDir)bin\Debug\RevitLookupZW.dll" "$(AppData)\Autodesk\REVIT\Addins\2018"
+    <PostBuildEvent>copy "$(ProjectDir)RevitLookupZW.addin" "C:\ProgramData\Autodesk\REVIT\Addins\2018"
+copy "$(ProjectDir)bin\Debug\RevitLookupZW.dll" "C:\ProgramData\Autodesk\REVIT\Addins\2018"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

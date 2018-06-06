@@ -32,6 +32,7 @@ using Autodesk.Revit.UI;
 using Autodesk.Revit.Attributes;
 using System.Reflection;
 using RevitLookup.Snoop.Forms;
+using RevitLookup.AICheck.Forms;
 
 
 // Each command is implemented as a class that provides the IExternalCommand Interface
@@ -546,7 +547,7 @@ namespace RevitLookup
                 //Snoop.CollectorExts.CollectorExt.m_activeDoc = dbdoc; // TBD: see note in CollectorExt.cs
                 //ActiveDoc.UIApp = cmdData.Application;
 
-                SelectBy selectFile = new SelectBy(cmdData);
+                CheckRvt selectFile = new CheckRvt(cmdData);
                 selectFile.ShowDialog();
                 result = Result.Succeeded;
             }
