@@ -168,7 +168,7 @@ namespace RevitLookup.AICheck.Forms
 			foreach (Element elem in elements)
 			{
 				//Cast to FamilyInstance is safe because ElementClassFilter for FamilyInstance was used
-				FamilyInstance familyInstance = elem as FamilyInstance; 
+				FamilyInstance familyInstance = elem as FamilyInstance;
 				Element fromRoom = familyInstance.FromRoom;
 				Element toRoom = familyInstance.ToRoom;
 
@@ -189,19 +189,73 @@ namespace RevitLookup.AICheck.Forms
 								string paramInfo = elem.Name + "(" + elem.Id + "):" + param.Definition.Name + "=" + val;
 								Trace.WriteLine(paramInfo);
 								Report.exportFile(debugFilePath, paramInfo);
-								if((double) val < 0.9)
+								if ((double)val < 0.9)
 								{
 									Report.exportFile(debugFilePath, "Break");
-								} else
+								}
+								else
 								{
 									Report.exportFile(debugFilePath, "Pass");
 								}
 							}
 							break;
 						}
-					}	
+					}
+					Report.exportFile(debugFilePath, "");
 				}
-				Report.exportFile(debugFilePath, "");
+			}
+			Report.exportFile(debugFilePath, "");
+		}
+
+
+		private void checkStair(string path, string debugFilePath)
+		{
+			Trace.WriteLine(path);
+			Report.exportFile(debugFilePath, path);
+
+			Document _doc = _cmdData.Application.Application.OpenDocumentFile(path);
+			FilteredElementCollector collector = new FilteredElementCollector(_doc);
+
+			ElementClassFilter filter = new ElementClassFilter(typeof(FamilyInstance));
+			FilteredElementCollector elements = collector.WherePasses(filter).OfCategory(BuiltInCategory.OST_Doors);
+			foreach (Element elem in elements)
+			{
+				//Cast to FamilyInstance is safe because ElementClassFilter for FamilyInstance was used
+				FamilyInstance familyInstance = elem as FamilyInstance;
+				Element fromRoom = familyInstance.FromRoom;
+				Element toRoom = familyInstance.ToRoom;
+
+				Boolean isEgressDoor = Door.getEgressDoor(fromRoom, toRoom);
+				if (isEgressDoor)
+				{
+					string elemInfo = elem.Name + "(" + elem.Id + "):" +
+						(fromRoom == null ? "" : fromRoom.Name) + "(fromRoom)->" + (toRoom == null ? "" : toRoom.Name) + "(toRoom)";
+					Trace.WriteLine(elemInfo);
+					Report.exportFile(debugFilePath, elemInfo);
+					foreach (Parameter param in _doc.GetElement(elem.GetTypeId()).Parameters)
+					{
+						if (param.Definition != null && param.Definition.Name != null && param.Definition.Name.Equals("宽度"))
+						{
+							object val = getParamValue(param, _doc);
+							if (val != null)
+							{
+								string paramInfo = elem.Name + "(" + elem.Id + "):" + param.Definition.Name + "=" + val;
+								Trace.WriteLine(paramInfo);
+								Report.exportFile(debugFilePath, paramInfo);
+								if ((double)val < 0.9)
+								{
+									Report.exportFile(debugFilePath, "Break");
+								}
+								else
+								{
+									Report.exportFile(debugFilePath, "Pass");
+								}
+							}
+							break;
+						}
+					}
+					Report.exportFile(debugFilePath, "");
+				}
 			}
 			Report.exportFile(debugFilePath, "");
 		}
@@ -264,8 +318,8 @@ namespace RevitLookup.AICheck.Forms
 			Trace.WriteLine(tbBuildingName.Text.Trim());
 			Trace.WriteLine(cbxBuildingType1.SelectedItem + "-" + cbxBuildingType2.SelectedItem
 				+ "-" + cbxBuildingLevel.SelectedItem);
-			Report.clearFile(tbBuildingName.Text.Trim());	
-			Report.clearFile(cbxBuildingType1.SelectedItem + "-" + cbxBuildingType2.SelectedItem
+			Report.exportFile(debugFilePath, tbBuildingName.Text.Trim());	
+			Report.exportFile(debugFilePath, cbxBuildingType1.SelectedItem + "-" + cbxBuildingType2.SelectedItem
 				+ "-" + cbxBuildingLevel.SelectedItem);
 			foreach (string path in files)
 			{
